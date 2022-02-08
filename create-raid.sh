@@ -1,30 +1,3 @@
-# **Описание**
-Все команды для выполнения данного дз взяты из методички.
-
-### **1. Что было изменено из начального файла Vagrant:**
-
-1. Добавлен пятый диск
-```
-:sata5 => {
-        :dfile => './sata5.vdi',
-        :size => 250, # Megabytes
-        :port => 5
-}
-```
-
-2. Добавлен скрипт, который собирает raid
-```
-box.vm.provision "shell", inline: <<-SHELL
-	 mkdir -p ~root/.ssh
-    cp ~vagrant/.ssh/auth* ~root/.ssh
-	 yum install -y mdadm smartmontools hdparm gdisk
-    sh /vagrant/create-raid.sh
-SHELL
-```
-
-### **2. Листинг скрипта**
-
-```
 #!/bin/bash
 
 ### Create Raid-5
@@ -56,4 +29,3 @@ for i in $(seq 1 5); do sudo mount /dev/md0p$i /raid/part$i; done
 
 # Make partition mounting permanent
 for i in $(seq 1 5); do sudo echo "/dev/md0p$i     /raid/part$i     ext4     defaults     0 0" >> /etc/fstab; done
-```
